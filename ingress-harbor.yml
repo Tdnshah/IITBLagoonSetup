@@ -1,0 +1,49 @@
+apiVersion: v1
+items:
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      ingress.kubernetes.io/proxy-body-size: "0"
+      ingress.kubernetes.io/ssl-redirect: "true"
+      kubernetes.io/tls-acme: "true"
+      meta.helm.sh/release-name: lagoon-core 
+      meta.helm.sh/release-namespace: lagoon-core
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/proxy-buffering: "off"
+      nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    creationTimestamp: "2023-12-25T21:44:27Z"
+    generation: 1
+    labels:
+      app: lagoon-core
+      app.kubernetes.io/managed-by: Helm
+      chart: lagoon-core
+      heritage: Helm
+      release: lagoon-core
+    name: lagoon-core-keycloak-ingress
+    namespace: lagoon-core 
+  spec:
+    ingressClassName: nginx
+    rules:
+    - host: keycloak.iitb.ac.in
+      http:
+        paths:
+        - backend:
+            service:
+              name: lagoon-core-keycloak
+              port:
+                number: 8080
+          path: /
+          pathType: prefix
+    tls:
+    - hosts:
+      - keycloak.iitb.ac.in
+      secretName: lagoon-core-keycloak
+  status:
+    loadBalancer:
+      ingress:
+      - ip: 10.204.1.123
+kind: List
+metadata:
+  resourceVersion: ""
